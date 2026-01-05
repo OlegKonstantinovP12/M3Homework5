@@ -31,13 +31,10 @@ struct MainPageView: View {
                     TabViewButton(item: page, selected: $selectedPage)
                 }
             }
-            .padding()
             .frame(maxWidth: .infinity)
             .background(.white)
             .padding(.bottom, 1)
         }
-        
-        
     }
 }
 

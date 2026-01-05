@@ -13,8 +13,12 @@ struct PromotionView: View {
     var oldPrice: Double
     var body: some View {
             VStack(alignment: .leading, spacing: 15) {
-                ContentTextView(text: name, font: .semiBold, size: 18, color: .white)
-                    .frame(width: 175)
+                VStack {
+                    ContentTextView(text: name, font: .semiBold, size: 18, color: .white)
+                }
+                .frame(width: 165, alignment: .leading)
+                
+                
                     
                 HStack {
                     ContentTextView(text: "\(String(format: "%0.2f", discountPrice))", font: .semiBold, size: 24, color: .white)
@@ -36,5 +40,5 @@ struct PromotionView: View {
 }
 
 #Preview {
-    PromotionView(name: "Honey Citrus Mint Tea", discountPrice: 6.7, oldPrice: 9.5)
+    PromotionView(name: "Hot Mocha Cappuccino Latte", discountPrice: 6.7, oldPrice: 9.5)
 }

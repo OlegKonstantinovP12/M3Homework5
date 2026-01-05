@@ -7,9 +7,11 @@
 
 import Foundation
 
-enum PageType: String, Equatable {
+enum PageType: String, Hashable {
     case home = "home"
     case order = "order"
     case invoice = "invoice"
     case settings = "settings"
 }
+
+

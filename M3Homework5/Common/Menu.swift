@@ -7,26 +7,14 @@
 
 import Foundation
 
-enum TypeMenu {
-    case coffee([Drink])
-    case tea([Drink])
-    case eat
-}
 
-enum CupSize: String {
-    case small = "Sm"
-    case medium = "Md"
-    case large = "Lr"
-    case extraLarge = "Xl"
-    
-}
 
-struct Menu: Identifiable {
+struct Menu: Identifiable, Hashable {
     let id: String = UUID().uuidString
     let typeMenu: TypeMenu
 }
 
-struct Drink: Identifiable {
+struct Drink: Identifiable, Hashable {
     let id: String = UUID().uuidString
     let name: String
     let image: String
@@ -37,15 +25,21 @@ struct Drink: Identifiable {
 }
 
 
-struct PriceCup: Identifiable {
+struct PriceCup: Identifiable, Hashable {
     let id: String = UUID().uuidString
     let size: CupSize
     let originalPrice: Double
     var discountPrice: Double? = nil
 }
 
-struct Discount: Identifiable {
+struct Discount: Identifiable, Hashable {
     let id: String = UUID().uuidString
     let name: String
     let discount: Double
+}
+
+struct FeaturedDrink: Identifiable, Hashable {
+    let id: String = UUID().uuidString
+    let drink: Drink
+    let category: DrinkByType
 }

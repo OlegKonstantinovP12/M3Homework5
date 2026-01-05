@@ -11,6 +11,7 @@ enum Poppins: String {
     case regular = "Poppins-Regular"
     case medium = "Poppins-Medium"
     case semiBold = "Poppins-SemiBold"
+    case light = "Poppins-Light"
 }
 
 extension Text {

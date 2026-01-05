@@ -10,16 +10,19 @@ import Combine
 
 class HomePageViewModel: ObservableObject {
     @Published var menu: [Menu] = []
-    //    var discountedMenu: [Menu] = []
+    @Published var featuredDrinks: [FeaturedDrink] = []
     private let networkManager = NetworkManager()
     
     func getMenu() {
         let menu = networkManager.getData()
         let discount = networkManager.getDiscounts()
         self.menu = applyDiscount(menu: menu, discounts: discount)
-        //        self.discountedMenu = applyDiscount(menu: menu, discounts: discount)
+        getFeaturedDrink(menu: menu)
     }
     
+    func getFeaturedDrink(menu: [Menu]) {
+        featuredDrinks = getRandomDrinks(menu: menu)
+    }
     
     private func calcDiscount(drink: Drink, discounts: [Discount]) -> Drink {
         guard let discount = discounts.first(where: { $0.name == drink.name}) else { return drink }
@@ -56,13 +59,26 @@ class HomePageViewModel: ObservableObject {
     func getDiscountedDrinks(menu: [Menu]) -> [Drink] {
         menu.flatMap { item in
             switch item.typeMenu {
-            case .coffee(let drinks),
-                    .tea(let drinks):
+            case .coffee(let drinks), .tea(let drinks):
                 return drinks.filter { $0.discounted == true }
             case .eat:
                 return []
             }
         }
+    }
+    
+    private func getRandomDrinks(menu: [Menu], count: Int = 4) -> [FeaturedDrink] {
+        let allDrinks: [FeaturedDrink] = menu.flatMap { item in
+            switch item.typeMenu {
+            case .coffee(let drinks):
+                return drinks.map { FeaturedDrink(drink: $0, category: .coffee)}
+            case .tea(let drinks):
+                return drinks.map { FeaturedDrink(drink: $0, category: .tea)}
+            case .eat:
+                return []
+            }
+        }
+        return Array(allDrinks.shuffled().prefix(count))
     }
             
 }
