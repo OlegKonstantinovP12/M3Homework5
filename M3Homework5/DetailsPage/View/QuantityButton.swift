@@ -30,8 +30,6 @@ struct QuantityButton: View {
             } label: {
                 ContentTextView(text: "+", font: .semiBold, size: 20, color: count < maxValue ? .oldPurple : .philippineGrey)
             }
-
-
         }
         .frame(width: 128)
         .padding(.vertical, 14)
@@ -43,7 +41,8 @@ struct QuantityButton: View {
         }
     }
 }
-//
-//#Preview {
-//    QuantityButton(count: )
-//}
+
+#Preview {
+    @Previewable @State var count: Int = 1
+    QuantityButton(count: $count)
+}

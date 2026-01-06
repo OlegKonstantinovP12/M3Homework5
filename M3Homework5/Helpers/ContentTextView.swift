@@ -16,7 +16,6 @@ struct ContentTextView: View {
         Text(text)
             .poppins(font, size: size)
             .foregroundStyle(color)
-        
     }
 }
 

@@ -18,9 +18,9 @@ struct Drink: Identifiable, Hashable {
     let id: String = UUID().uuidString
     let name: String
     let image: String
-    var rate: Double
+    let rate: Double
+    let description: String
     var discounted: Bool? = false
-    var description: String? = nil
     let price: [PriceCup]
 }
 

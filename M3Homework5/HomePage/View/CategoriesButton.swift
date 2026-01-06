@@ -34,7 +34,6 @@ struct CategoriesButton: View {
         .frame(width: 149, height: 156)
         .background(.oldPurple)
         .clipShape(RoundedRectangle(cornerRadius: 22))
-       
     }
 }
 

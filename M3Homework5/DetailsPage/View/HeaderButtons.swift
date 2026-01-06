@@ -19,26 +19,25 @@ struct HeaderButtons: View {
                     .frame(width: 24, height: 24)
                     .foregroundStyle(.white)
             }
+            
             Spacer()
+            
             ContentTextView(text: "Details", font: .semiBold, size: 20, color: .white)
+            
             Spacer()
-            Button {
-                
-            } label: {
+            
+            Button { /* */ } label: {
                 Image(systemName: "bookmark")
                     .resizable()
                     .frame(width: 18, height: 22)
                     .foregroundStyle(.white)
             }
-
-
         }
-        .padding(.leading,28)
-        .padding(.trailing, 29)
-        .padding(.top, 21)
     }
 }
 
-//#Preview {
-//    HeaderButtons()
-//}
+#Preview {
+    @Previewable @State var path = NavigationPath()
+    HeaderButtons(path: $path)
+        .background(.gray)
+}

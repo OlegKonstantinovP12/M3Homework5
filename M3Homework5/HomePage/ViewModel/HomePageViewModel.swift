@@ -35,8 +35,8 @@ class HomePageViewModel: ObservableObject {
             name: drink.name,
             image: drink.image,
             rate: drink.rate,
-            discounted: true,
             description: drink.description,
+            discounted: true,
             price: newPrices
         )
     }

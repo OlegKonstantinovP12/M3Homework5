@@ -38,6 +38,7 @@ struct FeaturedView: View {
                 VStack(alignment: .leading, spacing: 7) {
                     ContentTextView(text: title, font: .regular, size: 14)
                     ContentTextView(text: name, font: .semiBold, size: 16)
+                        .multilineTextAlignment(.leading)
                 }
                 .frame(width: 142, alignment: .leading)
                 

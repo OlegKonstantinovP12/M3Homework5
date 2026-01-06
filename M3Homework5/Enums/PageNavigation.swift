@@ -8,5 +8,5 @@
 import Foundation
 
 enum PageNavigation: Hashable {
-    case details(drink: FeaturedDrink)
+    case details(drink: Drink)
 }

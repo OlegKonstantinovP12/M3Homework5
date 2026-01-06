@@ -12,12 +12,13 @@ struct MainPageView: View {
         UITabBar.appearance().isHidden = true
     }
     @State var selectedPage: PageType = .home
+    @State var path = NavigationPath()
     var pages: [PageType] = [.home, .order, .invoice, .settings]
     var body: some View {
         ZStack(alignment: .bottom) {
             
             TabView(selection: $selectedPage) {
-                HomePageView()
+                HomePageView(path: $path)
                     .tag(PageType.home)
                 Text("Order")
                     .tag(PageType.order)
@@ -34,6 +35,8 @@ struct MainPageView: View {
             .frame(maxWidth: .infinity)
             .background(.white)
             .padding(.bottom, 1)
+            .opacity(path.isEmpty ? 1 : 0)
+            
         }
     }
 }

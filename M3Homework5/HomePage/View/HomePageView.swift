@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomePageView: View {
     @StateObject var viewModel = HomePageViewModel()
-    @State var path = NavigationPath()
+    @Binding var path: NavigationPath
     var body: some View {
         NavigationStack(path: $path) {
             ScrollView(.vertical) {
@@ -39,11 +39,6 @@ struct HomePageView: View {
                             }
                             .padding(.leading, 28)
                             .padding(.trailing, 28)
-                            .onAppear {
-                                viewModel.getMenu()
-                                
-                                
-                            }
                         }
                         .scrollIndicators(.hidden)
                         //Categories
@@ -55,6 +50,7 @@ struct HomePageView: View {
                             HStack {
                                 ContentTextView(text: "Featured Beverages", font: .medium, size: 18, color: .black)
                                 Spacer()
+                                
                                 Button {
                                     //
                                 } label: {
@@ -64,45 +60,38 @@ struct HomePageView: View {
                             .padding(.leading, 28)
                             .padding(.trailing, 29)
                             ScrollView(.horizontal) {
-                                
                                 HStack {
                                     ForEach(viewModel.featuredDrinks) { item in
                                         Button {
-                                            path.append(PageNavigation.details(drink: item))
+                                            path.append(PageNavigation.details(drink: item.drink))
                                         } label: {
                                             FeaturedView(image: Image(item.drink.image), title: item.category.rawValue, name: item.drink.name, price: item.drink.price.first!.originalPrice, rate: item.drink.rate)
                                         }
-                                        
                                     }
                                 }
                                 .padding(.leading, 28)
                                 .padding(.trailing, 29)
-                                
                             }
-                            
                         }
-                        
-                        
                     }
                 }
             }
             .padding(.bottom, 60)
-        }
-        .navigationDestination(for: PageNavigation.self) { page in
-            switch page {
-            case .details(let drink):
-                DetailsView(drink: drink, path: $path)
-                
+            .navigationDestination(for: PageNavigation.self) { page in
+                switch page {
+                case .details(let drink):
+                    DetailsView(drink: drink, path: $path)
+                }
             }
         }
-        
-        
-        
-        
+        .onAppear {
+            viewModel.getMenu()
+        }
     }
 }
 
 #Preview {
-    HomePageView()
+    @Previewable @State var path: NavigationPath = NavigationPath()
+    HomePageView( path: $path)
 }
 
