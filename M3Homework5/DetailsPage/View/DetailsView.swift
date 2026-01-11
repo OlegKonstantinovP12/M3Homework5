@@ -96,7 +96,7 @@ struct DetailsView: View {
                                 } label: {
                                     HStack{
                                         ContentTextView(text: "Place order",font: .semiBold, size: 16, color: .white)
-                                        ContentTextView(text: "$\(finalPrice)", font: .semiBold, size: 16, color: .white.opacity(0.37))
+                                        ContentTextView(text: "$\(String(format: "%.2f", finalPrice))", font: .semiBold, size: 16, color: .white.opacity(0.37))
                                     }
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, 18)
@@ -124,6 +124,6 @@ struct DetailsView: View {
 DetailsView(drink: Drink(name: "Hot Sweet Indonesian Tea", image: "indonesian", rate: 3.9, description: "Сладкий чёрный чай с пряными индонезийскими специями. Тёплый, ароматный напиток с нотками тропиков. Создан для уютных вечеров.", price: [PriceCup(size: .small, originalPrice: 4.35),
                                                                                                                                                                                                                                                   PriceCup(size: .medium, originalPrice: 5.35),
                                                                                                                                                                                                                                                   PriceCup(size: .large, originalPrice: 6.35),
-                                                                                                                                                                                                                                                  PriceCup(size: .extraLarge, originalPrice: 7.35)]), path: $path)
+                                                                                                                                                                                                                                                  PriceCup(size: .extraLarge, originalPrice: 7.35)], category: .coffee), path: $path)
 
 }

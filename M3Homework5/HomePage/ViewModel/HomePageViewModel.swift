@@ -10,7 +10,7 @@ import Combine
 
 class HomePageViewModel: ObservableObject {
     @Published var menu: [Menu] = []
-    @Published var featuredDrinks: [FeaturedDrink] = []
+    @Published var featuredDrinks: [Drink] = []
     private let networkManager = NetworkManager()
     
     func getMenu() {
@@ -18,6 +18,20 @@ class HomePageViewModel: ObservableObject {
         let discount = networkManager.getDiscounts()
         self.menu = applyDiscount(menu: menu, discounts: discount)
         getFeaturedDrink(menu: menu)
+       
+    }
+    
+    func getCountPosition(menu: Menu) -> Int {
+        switch menu.typeMenu {
+        case .beverages(let drinks):
+           return drinks.count
+        case .food(let foods):
+            if !foods.isEmpty {
+                return foods.count
+            } else {
+                return 0
+            }
+        }
     }
     
     func getFeaturedDrink(menu: [Menu]) {
@@ -37,20 +51,17 @@ class HomePageViewModel: ObservableObject {
             rate: drink.rate,
             description: drink.description,
             discounted: true,
-            price: newPrices
+            price: newPrices,
+            category: drink.category
         )
     }
     private func applyDiscount(menu: [Menu], discounts: [Discount]) -> [Menu] {
         menu.map { item in
             switch item.typeMenu {
-            case .coffee(let drinks):
+            case .beverages(let drinks):
                 let updatedDrink = drinks.map {calcDiscount(drink: $0, discounts: discounts)}
-                return Menu(typeMenu: .coffee(updatedDrink))
-                
-            case .tea(let drinks):
-                let updatedDrink = drinks.map {calcDiscount(drink: $0, discounts: discounts)}
-                return Menu(typeMenu: .tea(updatedDrink))
-            case .eat:
+                return Menu(typeMenu: .beverages(updatedDrink))
+            case .food( _):
                 return item
             }
         }
@@ -59,26 +70,32 @@ class HomePageViewModel: ObservableObject {
     func getDiscountedDrinks(menu: [Menu]) -> [Drink] {
         menu.flatMap { item in
             switch item.typeMenu {
-            case .coffee(let drinks), .tea(let drinks):
-                return drinks.filter { $0.discounted == true }
-            case .eat:
+            case .beverages(let drinks):
+                return drinks.filter { $0.discounted }
+            case .food( _):
                 return []
             }
         }
     }
     
-    private func getRandomDrinks(menu: [Menu], count: Int = 4) -> [FeaturedDrink] {
-        let allDrinks: [FeaturedDrink] = menu.flatMap { item in
+    private func getRandomDrinks(menu: [Menu], count: Int = 4) -> [Drink] {
+        let allDrinks = menu.flatMap { item in
             switch item.typeMenu {
-            case .coffee(let drinks):
-                return drinks.map { FeaturedDrink(drink: $0, category: .coffee)}
-            case .tea(let drinks):
-                return drinks.map { FeaturedDrink(drink: $0, category: .tea)}
-            case .eat:
+            case .beverages(let drinks):
+                return drinks
+            case .food( _):
                 return []
             }
         }
         return Array(allDrinks.shuffled().prefix(count))
     }
             
+    func drinks(menu: Menu) -> [Drink] {
+        switch menu.typeMenu {
+        case .beverages(let drinks):
+            return drinks
+        case .food( _):
+            return []
+        }
+    }
 }

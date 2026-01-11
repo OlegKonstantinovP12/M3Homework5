@@ -9,4 +9,5 @@ import Foundation
 
 enum PageNavigation: Hashable {
     case details(drink: Drink)
+    case product(drink: [Drink])
 }

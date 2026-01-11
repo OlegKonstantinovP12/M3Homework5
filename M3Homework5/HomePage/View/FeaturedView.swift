@@ -23,16 +23,8 @@ struct FeaturedView: View {
                         .scaledToFill()
                         .frame(width: 205, height: 126)
                         .clipShape(RoundedRectangle(cornerRadius: 22))
-                    Image(.order)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                        .padding(17)
-                        .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 22))
+                    OrderImageButton()
                         .offset(x: -10, y: 29)
-                        .shadow(color: .black.opacity(0.2), radius: 10, y: 5)
-                        .foregroundStyle(.oldPurple)
                 }
                 //Text
                 VStack(alignment: .leading, spacing: 7) {

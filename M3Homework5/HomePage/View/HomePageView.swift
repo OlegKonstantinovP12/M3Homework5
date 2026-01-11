@@ -10,6 +10,7 @@ import SwiftUI
 struct HomePageView: View {
     @StateObject var viewModel = HomePageViewModel()
     @Binding var path: NavigationPath
+    
     var body: some View {
         NavigationStack(path: $path) {
             ScrollView(.vertical) {
@@ -30,20 +31,42 @@ struct HomePageView: View {
                         .padding(.leading, 28)
                         .padding(.trailing, 29)
                         ScrollView(.horizontal) {
-                            HStack(spacing: 15) {
+                            HStack(spacing: 1) {
                                 ForEach(viewModel.getDiscountedDrinks(menu: viewModel.menu)) { drink in
                                     if let cup = drink.price.first {
                                         PromotionView(name: drink.name, discountPrice: cup.discountPrice ?? cup.originalPrice, oldPrice: cup.originalPrice)
+                                            .scrollTransition { content, phase in
+                                                content
+                                                    .opacity(phase.isIdentity ? 1 : 0.5)
+                                                    .scaleEffect(phase.isIdentity ? 1 : 0.8)
+                                            }
                                     }
                                 }
                             }
                             .padding(.leading, 28)
                             .padding(.trailing, 28)
+                            .scrollTargetLayout()
                         }
                         .scrollIndicators(.hidden)
+                        .scrollTargetBehavior(.viewAligned)
                         //Categories
                         VStack(alignment: .leading) {
-                            CategoriesView()
+                            VStack(alignment: .leading, spacing: 20) {
+                                ContentTextView(text: "Categories", font: .medium, size: 18, color: .black)
+                                HStack(spacing: 15) {
+                                    ForEach(viewModel.menu) { item in
+                                        Button {
+                                            path.append(PageNavigation.product(drink: viewModel.drinks(menu: item)))
+                                        } label: {
+                                            CategoriesView(image: Image(.cup), text: "Beverage", count: viewModel.getCountPosition(menu: item))
+                                            
+                                        }
+                                    }
+                                        }
+                                        
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 28)
                         }
                         //Featured
                         VStack(alignment: .leading) {
@@ -63,9 +86,9 @@ struct HomePageView: View {
                                 HStack {
                                     ForEach(viewModel.featuredDrinks) { item in
                                         Button {
-                                            path.append(PageNavigation.details(drink: item.drink))
+                                            path.append(PageNavigation.details(drink: item))
                                         } label: {
-                                            FeaturedView(image: Image(item.drink.image), title: item.category.rawValue, name: item.drink.name, price: item.drink.price.first!.originalPrice, rate: item.drink.rate)
+                                            FeaturedView(image: Image(item.image), title: item.category.rawValue, name: item.name, price: item.price.first!.originalPrice, rate: item.rate)
                                         }
                                     }
                                 }
@@ -81,6 +104,8 @@ struct HomePageView: View {
                 switch page {
                 case .details(let drink):
                     DetailsView(drink: drink, path: $path)
+                case .product(let drinks):
+                    ProductPageView(path: $path, drink: drinks)
                 }
             }
         }

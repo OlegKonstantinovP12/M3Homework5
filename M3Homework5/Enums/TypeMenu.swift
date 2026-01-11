@@ -7,7 +7,6 @@
 import Foundation
 
 enum TypeMenu: Hashable {
-    case coffee([Drink])
-    case tea([Drink])
-    case eat
+    case beverages([Drink])
+    case food([Food])
 }

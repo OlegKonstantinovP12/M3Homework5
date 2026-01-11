@@ -6,7 +6,7 @@
 //
 import Foundation
 
-enum DrinkByType: String, Hashable {
+enum DrinkByType: String, Hashable, CaseIterable {
     case coffee = "Coffee"
     case tea = "Tea"
 }
